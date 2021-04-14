@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CRCMain", "CRCMain\CRCMain.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_NeoPixel-1.7.0", "..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_NeoPixel\Adafruit_NeoPixel-1.7.0.vcxitems", "{0141F4C0-C909-4582-8196-4EACDE3A885F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Adafruit_VL53L0X-1.1.0", "..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_VL53L0X\Adafruit_VL53L0X-1.1.0.vcxitems", "{70B05C2F-62E4-412B-9838-1EE31B799245}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CrcDependency_xbee-arduino-master-0.6.0", "..\..\..\OneDrive\Documents\Arduino\libraries\CrcDependency_xbee-arduino-master\CrcDependency_xbee-arduino-master-0.6.0.vcxitems", "{0D85D277-C1B3-4A95-9B64-1A3032FAD1E5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CrcLib-0.0.0", "..\..\..\OneDrive\Documents\Arduino\libraries\CrcLib\CrcLib-0.0.0.vcxitems", "{1E699241-C94B-451D-9879-1F96B1FBCEA3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Encoder-1.4.1", "..\..\..\OneDrive\Documents\Arduino\libraries\Encoder\Encoder-1.4.1.vcxitems", "{D87B908F-7D0D-44A9-9A98-B141C0AD05D0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PIDController-0.0.1", "..\..\..\OneDrive\Documents\Arduino\libraries\PIDController\PIDController-0.0.1.vcxitems", "{72AFE9BF-B97D-43AF-9201-2D63408D6CD2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SEN0304", "..\GPFinder\SEN0304\SEN0304.vcxitems", "{597A060D-03CF-4B88-8224-F3169C2A0640}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CRCSensors", "..\GPFinder\CRCSensors\CRCSensors.vcxitems", "{3580DABE-C283-446E-9CE1-D27D3F6CC032}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CRCMotors", "..\MotorLibrary\CRCMotors\CRCMotors.vcxitems", "{6DD08371-C10D-462C-AB6F-9D506D4C5435}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CRCSchedulerLibTest", "..\TestCRCScheduler\CRCSchedulerLibTest\CRCSchedulerLibTest.vcxitems", "{2345F84A-66CE-468E-8B58-561C65FE6E8E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "I2CDevices", "..\TestCRCScheduler\I2CDevices\I2CDevices.vcxitems", "{3C4FEEC7-9D44-41AC-9D38-7C23E00D2C70}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicQueue", "..\TestCRCScheduler\DynamicQueue\DynamicQueue.vcxitems", "{9C8FD799-975F-4F68-A010-00B6FA6A1A48}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_NeoPixel\Adafruit_NeoPixel-1.7.0.vcxitems*{0141f4c0-c909-4582-8196-4eacde3a885f}*SharedItemsImports = 9
+		..\..\..\OneDrive\Documents\Arduino\libraries\CrcDependency_xbee-arduino-master\CrcDependency_xbee-arduino-master-0.6.0.vcxitems*{0d85d277-c1b3-4a95-9b64-1a3032fad1e5}*SharedItemsImports = 9
+		..\..\..\OneDrive\Documents\Arduino\libraries\CrcLib\CrcLib-0.0.0.vcxitems*{1e699241-c94b-451d-9879-1f96b1fbcea3}*SharedItemsImports = 9
+		..\TestCRCScheduler\CRCSchedulerLibTest\CRCSchedulerLibTest.vcxitems*{2345f84a-66ce-468e-8b58-561c65fe6e8e}*SharedItemsImports = 9
+		..\GPFinder\CRCSensors\CRCSensors.vcxitems*{3580dabe-c283-446e-9ce1-d27d3f6cc032}*SharedItemsImports = 9
+		..\TestCRCScheduler\I2CDevices\I2CDevices.vcxitems*{3c4feec7-9d44-41ac-9d38-7c23e00d2c70}*SharedItemsImports = 9
+		..\GPFinder\SEN0304\SEN0304.vcxitems*{597a060d-03cf-4b88-8224-f3169c2a0640}*SharedItemsImports = 9
+		..\MotorLibrary\CRCMotors\CRCMotors.vcxitems*{6dd08371-c10d-462c-ab6f-9d506d4c5435}*SharedItemsImports = 9
+		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_VL53L0X\Adafruit_VL53L0X-1.1.0.vcxitems*{70b05c2f-62e4-412b-9838-1ee31b799245}*SharedItemsImports = 9
+		..\..\..\OneDrive\Documents\Arduino\libraries\PIDController\PIDController-0.0.1.vcxitems*{72afe9bf-b97d-43af-9201-2d63408d6cd2}*SharedItemsImports = 9
+		..\TestCRCScheduler\DynamicQueue\DynamicQueue.vcxitems*{9c8fd799-975f-4f68-a010-00b6fa6a1a48}*SharedItemsImports = 9
+		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_NeoPixel\Adafruit_NeoPixel-1.7.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_VL53L0X\Adafruit_VL53L0X-1.1.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\..\..\OneDrive\Documents\Arduino\libraries\CrcDependency_xbee-arduino-master\CrcDependency_xbee-arduino-master-0.6.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\..\..\OneDrive\Documents\Arduino\libraries\CrcLib\CrcLib-0.0.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\..\..\OneDrive\Documents\Arduino\libraries\Encoder\Encoder-1.4.1.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\..\..\OneDrive\Documents\Arduino\libraries\PIDController\PIDController-0.0.1.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\GPFinder\CRCSensors\CRCSensors.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\GPFinder\SEN0304\SEN0304.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\MotorLibrary\CRCMotors\CRCMotors.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\TestCRCScheduler\CRCSchedulerLibTest\CRCSchedulerLibTest.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\TestCRCScheduler\DynamicQueue\DynamicQueue.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\TestCRCScheduler\I2CDevices\I2CDevices.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\..\..\OneDrive\Documents\Arduino\libraries\Encoder\Encoder-1.4.1.vcxitems*{d87b908f-7d0d-44a9-9a98-b141c0ad05d0}*SharedItemsImports = 9
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.ActiveCfg = Debug|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.Build.0 = Debug|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
+		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C1EAEB94-094D-4113-8D9F-B9660A453149}
+	EndGlobalSection
+EndGlobal
