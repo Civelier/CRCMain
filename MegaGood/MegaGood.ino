@@ -9,7 +9,8 @@
 #include <LinearEncoder.h>
 #include <JankyEncoder.h>
 #include <Encoder.h>
-//#include "LinearEncodedMotor.h"
+#include <LocalDeviceManager.h>
+#include "LinearEncodedMotor.h"
 
 
 using namespace Local;
