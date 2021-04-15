@@ -29,6 +29,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "I2CDevices", "..\TestCRCSch
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicQueue", "..\TestCRCScheduler\DynamicQueue\DynamicQueue.vcxitems", "{9C8FD799-975F-4F68-A010-00B6FA6A1A48}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MegaGood", "MegaGood\MegaGood.vcxproj", "{3D9E4ED0-26BF-44BC-81D0-871E222CF78E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "I2CDevs", "I2CDevs\I2CDevs.vcxitems", "{6266AB26-4C12-437B-8C08-457AB69FB574}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JankyEncoder", "..\JankyEncoder\JankyEncoder\JankyEncoder.vcxitems", "{78D067D8-05A9-4B5F-BE7A-F8D249663A0C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_NeoPixel\Adafruit_NeoPixel-1.7.0.vcxitems*{0141f4c0-c909-4582-8196-4eacde3a885f}*SharedItemsImports = 9
@@ -37,10 +43,16 @@ Global
 		..\TestCRCScheduler\CRCSchedulerLibTest\CRCSchedulerLibTest.vcxitems*{2345f84a-66ce-468e-8b58-561c65fe6e8e}*SharedItemsImports = 9
 		..\GPFinder\CRCSensors\CRCSensors.vcxitems*{3580dabe-c283-446e-9ce1-d27d3f6cc032}*SharedItemsImports = 9
 		..\TestCRCScheduler\I2CDevices\I2CDevices.vcxitems*{3c4feec7-9d44-41ac-9d38-7c23e00d2c70}*SharedItemsImports = 9
+		..\..\..\OneDrive\Documents\Arduino\libraries\Encoder\Encoder-1.4.1.vcxitems*{3d9e4ed0-26bf-44bc-81d0-871e222cf78e}*SharedItemsImports = 4
+		..\..\..\OneDrive\Documents\Arduino\libraries\PIDController\PIDController-0.0.1.vcxitems*{3d9e4ed0-26bf-44bc-81d0-871e222cf78e}*SharedItemsImports = 4
+		..\JankyEncoder\JankyEncoder\JankyEncoder.vcxitems*{3d9e4ed0-26bf-44bc-81d0-871e222cf78e}*SharedItemsImports = 4
+		..\TestCRCScheduler\I2CDevices\I2CDevices.vcxitems*{3d9e4ed0-26bf-44bc-81d0-871e222cf78e}*SharedItemsImports = 4
 		..\GPFinder\SEN0304\SEN0304.vcxitems*{597a060d-03cf-4b88-8224-f3169c2a0640}*SharedItemsImports = 9
+		I2CDevs\I2CDevs.vcxitems*{6266ab26-4c12-437b-8c08-457ab69fb574}*SharedItemsImports = 9
 		..\MotorLibrary\CRCMotors\CRCMotors.vcxitems*{6dd08371-c10d-462c-ab6f-9d506d4c5435}*SharedItemsImports = 9
 		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_VL53L0X\Adafruit_VL53L0X-1.1.0.vcxitems*{70b05c2f-62e4-412b-9838-1ee31b799245}*SharedItemsImports = 9
 		..\..\..\OneDrive\Documents\Arduino\libraries\PIDController\PIDController-0.0.1.vcxitems*{72afe9bf-b97d-43af-9201-2d63408d6cd2}*SharedItemsImports = 9
+		..\JankyEncoder\JankyEncoder\JankyEncoder.vcxitems*{78d067d8-05a9-4b5f-be7a-f8d249663a0c}*SharedItemsImports = 9
 		..\TestCRCScheduler\DynamicQueue\DynamicQueue.vcxitems*{9c8fd799-975f-4f68-a010-00b6fa6a1a48}*SharedItemsImports = 9
 		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_NeoPixel\Adafruit_NeoPixel-1.7.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_VL53L0X\Adafruit_VL53L0X-1.1.0.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
@@ -50,6 +62,7 @@ Global
 		..\..\..\OneDrive\Documents\Arduino\libraries\PIDController\PIDController-0.0.1.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\GPFinder\CRCSensors\CRCSensors.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\GPFinder\SEN0304\SEN0304.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
+		..\JankyEncoder\JankyEncoder\JankyEncoder.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\MotorLibrary\CRCMotors\CRCMotors.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\TestCRCScheduler\CRCSchedulerLibTest\CRCSchedulerLibTest.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
 		..\TestCRCScheduler\DynamicQueue\DynamicQueue.vcxitems*{c5f80730-f44f-4478-bdae-6634efc2ca88}*SharedItemsImports = 4
@@ -65,6 +78,10 @@ Global
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.Build.0 = Debug|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
+		{3D9E4ED0-26BF-44BC-81D0-871E222CF78E}.Debug|x86.ActiveCfg = Debug|Win32
+		{3D9E4ED0-26BF-44BC-81D0-871E222CF78E}.Debug|x86.Build.0 = Debug|Win32
+		{3D9E4ED0-26BF-44BC-81D0-871E222CF78E}.Release|x86.ActiveCfg = Release|Win32
+		{3D9E4ED0-26BF-44BC-81D0-871E222CF78E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
