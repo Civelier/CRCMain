@@ -35,12 +35,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "I2CDevs", "I2CDevs\I2CDevs.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JankyEncoder", "..\JankyEncoder\JankyEncoder\JankyEncoder.vcxitems", "{78D067D8-05A9-4B5F-BE7A-F8D249663A0C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "I2CLocal", "..\TestCRCScheduler\I2CLocal\I2CLocal.vcxproj", "{319787E2-19EB-4E1E-96DC-364C2240FC5E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "I2CRemote", "..\TestCRCScheduler\I2CRemote\I2CRemote.vcxproj", "{22020ADF-3F36-4241-B060-BB09B2F2644C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\..\..\OneDrive\Documents\Arduino\libraries\Adafruit_NeoPixel\Adafruit_NeoPixel-1.7.0.vcxitems*{0141f4c0-c909-4582-8196-4eacde3a885f}*SharedItemsImports = 9
 		..\..\..\OneDrive\Documents\Arduino\libraries\CrcDependency_xbee-arduino-master\CrcDependency_xbee-arduino-master-0.6.0.vcxitems*{0d85d277-c1b3-4a95-9b64-1a3032fad1e5}*SharedItemsImports = 9
 		..\..\..\OneDrive\Documents\Arduino\libraries\CrcLib\CrcLib-0.0.0.vcxitems*{1e699241-c94b-451d-9879-1f96b1fbcea3}*SharedItemsImports = 9
+		..\TestCRCScheduler\CRCSchedulerLibTest\CRCSchedulerLibTest.vcxitems*{22020adf-3f36-4241-b060-bb09b2f2644c}*SharedItemsImports = 4
+		..\TestCRCScheduler\DynamicQueue\DynamicQueue.vcxitems*{22020adf-3f36-4241-b060-bb09b2f2644c}*SharedItemsImports = 4
+		..\TestCRCScheduler\I2CDevices\I2CDevices.vcxitems*{22020adf-3f36-4241-b060-bb09b2f2644c}*SharedItemsImports = 4
 		..\TestCRCScheduler\CRCSchedulerLibTest\CRCSchedulerLibTest.vcxitems*{2345f84a-66ce-468e-8b58-561c65fe6e8e}*SharedItemsImports = 9
+		..\TestCRCScheduler\I2CDevices\I2CDevices.vcxitems*{319787e2-19eb-4e1e-96dc-364c2240fc5e}*SharedItemsImports = 4
 		..\GPFinder\CRCSensors\CRCSensors.vcxitems*{3580dabe-c283-446e-9ce1-d27d3f6cc032}*SharedItemsImports = 9
 		..\TestCRCScheduler\I2CDevices\I2CDevices.vcxitems*{3c4feec7-9d44-41ac-9d38-7c23e00d2c70}*SharedItemsImports = 9
 		..\..\..\OneDrive\Documents\Arduino\libraries\Encoder\Encoder-1.4.1.vcxitems*{3d9e4ed0-26bf-44bc-81d0-871e222cf78e}*SharedItemsImports = 4
@@ -82,6 +90,14 @@ Global
 		{3D9E4ED0-26BF-44BC-81D0-871E222CF78E}.Debug|x86.Build.0 = Debug|Win32
 		{3D9E4ED0-26BF-44BC-81D0-871E222CF78E}.Release|x86.ActiveCfg = Release|Win32
 		{3D9E4ED0-26BF-44BC-81D0-871E222CF78E}.Release|x86.Build.0 = Release|Win32
+		{319787E2-19EB-4E1E-96DC-364C2240FC5E}.Debug|x86.ActiveCfg = Debug|Win32
+		{319787E2-19EB-4E1E-96DC-364C2240FC5E}.Debug|x86.Build.0 = Debug|Win32
+		{319787E2-19EB-4E1E-96DC-364C2240FC5E}.Release|x86.ActiveCfg = Release|Win32
+		{319787E2-19EB-4E1E-96DC-364C2240FC5E}.Release|x86.Build.0 = Release|Win32
+		{22020ADF-3F36-4241-B060-BB09B2F2644C}.Debug|x86.ActiveCfg = Debug|Win32
+		{22020ADF-3F36-4241-B060-BB09B2F2644C}.Debug|x86.Build.0 = Debug|Win32
+		{22020ADF-3F36-4241-B060-BB09B2F2644C}.Release|x86.ActiveCfg = Release|Win32
+		{22020ADF-3F36-4241-B060-BB09B2F2644C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
