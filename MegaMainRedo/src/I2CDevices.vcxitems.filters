@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ILocalDevice.h">
+      <Filter>Local</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IRemoteDevice.h">
+      <Filter>Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BinarySerializer.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ByteArray.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ByteUnions.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Definitions.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ISerializable.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Request.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ILocalDistanceSensor.h">
+      <Filter>Local</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IRemoteDistanceSensor.h">
+      <Filter>Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Addresses.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transmitter.h">
+      <Filter>Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Reciever.h">
+      <Filter>Local</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LocalDeviceManager.h">
+      <Filter>Local</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RemoteDeviceManager.h">
+      <Filter>Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RemoteSR04DistanceSensor.h">
+      <Filter>Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RemoteIncludes.h">
+      <Filter>Remote</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LocalIncludes.h">
+      <Filter>Local</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LocalSR04DistanceSensor.h">
+      <Filter>Local</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)LocalDebugDevice.h">
+      <Filter>Local</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RemoteDebugDevice.h">
+      <Filter>Remote</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Remote">
+      <UniqueIdentifier>{acab7ca0-8829-4f97-b0e0-b55b076431c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Local">
+      <UniqueIdentifier>{a7539be1-de15-435e-a01d-b8befeb92ceb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{dc9a2618-fb2b-4d50-a02b-5eb7d9dd596c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{178f4591-a241-4c74-b94a-04671ae118b8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BinarySerializer.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ByteArray.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transmitter.cpp">
+      <Filter>Remote</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Reciever.cpp">
+      <Filter>Local</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LocalDeviceManager.cpp">
+      <Filter>Local</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RemoteDeviceManager.cpp">
+      <Filter>Remote</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RemoteSR04DistanceSensor.cpp">
+      <Filter>Remote</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LocalSR04DistanceSensor.cpp">
+      <Filter>Local</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)LocalDebugDevice.cpp">
+      <Filter>Local</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RemoteDebugDevice.cpp">
+      <Filter>Remote</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{3c4feec7-9d44-41ac-9d38-7c23e00d2c70}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="$(MSBuildThisFileDirectory)readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Addresses.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BinarySerializer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ByteArray.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ByteUnions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Definitions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LocalDebugDevice.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LocalIncludes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ILocalDevice.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ILocalDistanceSensor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IRemoteDevice.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IRemoteDistanceSensor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LocalDeviceManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LocalSR04DistanceSensor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Reciever.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RemoteDebugDevice.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RemoteDeviceManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RemoteIncludes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RemoteSR04DistanceSensor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Request.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ISerializable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transmitter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BinarySerializer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ByteArray.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LocalDebugDevice.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LocalDeviceManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LocalSR04DistanceSensor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Reciever.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RemoteDebugDevice.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RemoteDeviceManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RemoteSR04DistanceSensor.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transmitter.cpp" />
+  </ItemGroup>
+</Project>
