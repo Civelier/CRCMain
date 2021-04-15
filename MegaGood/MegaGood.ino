@@ -103,13 +103,13 @@ void loop()
 	Manager.Run();
 	CommandManager();
 	motorCharriot->Update();
-	motorWind->Update();
-	static uint32_t nextMillis = 0;
+	//motorWind->Update();
+	/*static uint32_t nextMillis = 0;
 	if (nextMillis < millis())
 	{
 		nextMillis = millis() + 500;
 		Serial.println(encoWind->GetPosition());
-	}
+	}*/
 	if (Reciever::GetInstance().RequestAvailable())
 	{
 		Serial.println("Request recieved");
