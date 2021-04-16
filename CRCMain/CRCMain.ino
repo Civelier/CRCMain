@@ -270,7 +270,11 @@ struct Pince
 	double Closed;
 	ServoMotor Servo1;
 	ServoMotor Servo2;
-
+	void SetPercent(double percent)
+	{
+		Servo1.Write(percent);
+		Servo2.Write(percent);
+	}
 	void Open()
 	{
 		Servo1.Write(Opened);
@@ -296,13 +300,13 @@ void CommandManager()
 	case 1: // set speed
 	{
 		double v = Serial.parseFloat();
-		//motorWind->SetPercent(v);
+		Pivot.SetPercent(v);
 	}
 	break;
 	case 2: // move pos
 	{
 		double d = Serial.parseFloat();
-		//motorWind->MoveDistance(d, 1);
+		// motorWind->MoveDistance(d, 1);
 	}
 	break;
 	case 3: // move pince
@@ -310,6 +314,28 @@ void CommandManager()
 		break;
 	case 4:
 		pince.Close();
+		break;
+	case 5:
+	{
+		double d = Serial.parseFloat();
+		Serial.print("Pince: ");
+		Serial.println(d);
+		pince.SetPercent(d);
+	}
+	break;
+	case 6:
+		PivotLS.Test();
+		break;
+	case 7:
+		PivotHighLS.Test();
+		break;
+	case 8:
+		Pivot.SetPercent(-0.2);
+		while (Serial.available()) Serial.read();
+		while (!Serial.available() && !PivotHighLS.GetState())
+		{
+		}
+		Pivot.SetPercent(0);
 		break;
 	default:
 		break;
@@ -396,7 +422,7 @@ void loop()
 	else
 	{
 		Serial.println("ARMED!!!!!");
-		/*while (!digitalRead(CRC_DIG_1));
+		while (!digitalRead(CRC_DIG_1));
 		while (digitalRead(CRC_DIG_1));
 
 		Serial.println("resetting");
@@ -405,7 +431,7 @@ void loop()
 		while (!Serial.available() && !PivotHighLS.GetState())
 		{
 		}
-		Pivot.SetPercent(0);*/
+		Pivot.SetPercent(0);
 
 		while (!digitalRead(CRC_DIG_1));
 		while (digitalRead(CRC_DIG_1));
