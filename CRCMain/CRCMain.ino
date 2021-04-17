@@ -4,46 +4,49 @@
  Author:	civel
 */
 
-// the setup function runs once when you press reset or power the board
-#include <Wire.h>
-#include <Servo.h>
-#include <PIDController.h>
-#include <MPU6050.h>
-#include <Encoder.h>
-#include <CrcLib.h>
-#include <Adafruit_VL53L0X.h>
-#include <Adafruit_NeoPixel.h>
-#include "Bilda5202Motor.h"
-#include "RemoteDeviceManager.h"
-#include "RemoteIncludes.h"
-#include "LinkedList.h"
-#include <RemoteLinearEncodedMotor.h>
-#include "Transmitter.h"
-#include "CRCScheduler.h"
-
-//using namespace Crc;
+//Includes
+#include <Wire.h> //Pour I2C
+#include <Servo.h> //Pour servos et moteurs
+#include <PIDController.h> //PID
+#include <Encoder.h> //Pour moteurs encoder
+#include <CrcLib.h> //Pour CRCDuino
+#include <Adafruit_VL53L0X.h> //Pour capteur I2c IR
+#include <Adafruit_NeoPixel.h> //Neopixel du Crcduino
+#include "Bilda5202Motor.h" //Ma library des moteurs encoder
+#include "RemoteDeviceManager.h" //Fait partie de ma library: Communication entre crc et Mega
+#include "RemoteIncludes.h" //Includes specifiques au cote remote de la communication
+#include "LinkedList.h" //Ma library de liste dynamique
+#include <RemoteLinearEncodedMotor.h> //Janky encoder a distance
+#include "Transmitter.h" //Communication au Mega (ma library)
+//#include "CRCScheduler.h" //Le scheduler (trop instable pour etre utilliser mais je le garde pcq le code marche avec et je veux pas prendre le temps de l'enlever et d'avoir a le remettre apres si on en a besoin)
 
 
-//CRCSchedulerClass Scheduler;
-//Remote::DeviceManager Manager(2, CRC_DIG_2, CRC_DIG_1);
-//Remote::RemoteLinearEncodedMotor* motorCharriot;
-//Remote::RemoteLinearEncodedMotor* motorWind;
-//Remote::RemoteLinearEncodedMotor* motorRotate;
-
-//Bilda5202Motor* motorL;
-//Bilda5202Motor* motorR;
-
+/// <summary>
+/// Moteur simple
+/// </summary>
 struct Motor
 {
+	/// <summary>
+	/// Constructeur
+	/// </summary>
+	/// <param name="pin">PWM pin of the motor</param>
+	/// <param name="inverse">Is the motor reversed</param>
 	Motor(uint8_t pin, bool inverse = false)
 	{
 		Pin = pin;
 		Inverse = inverse;
 	}
+	/// <summary>
+	/// Initialize the motor
+	/// </summary>
 	void Begin()
 	{
 		Crc::CrcLib::InitializePwmOutput(Pin);
 	}
+	/// <summary>
+	/// Set the motor speed
+	/// </summary>
+	/// <param name="value">value from -1 to 1 describing the speed</param>
 	void SetPercent(double value)
 	{
 		Crc::CrcLib::SetPwmOutputFastDouble(Pin, 0.5 + (Inverse ? -value : value) / 2);
@@ -52,13 +55,25 @@ struct Motor
 	bool Inverse;
 };
 
+
+/// <summary>
+/// Limit switch simple
+/// </summary>
 struct LimitSwitch
 {
+	/// <summary>
+	/// Constructor
+	/// </summary>
+	/// <param name="pin">Digital IO pin</param>
+	/// <param name="inverse">Is the switch NC</param>
 	LimitSwitch(uint8_t pin, bool inverse = false)
 	{
 		Pin = pin;
 		Inverse = inverse;
 	}
+	/// <summary>
+	/// 
+	/// </summary>
 	void Begin()
 	{
 		Crc::CrcLib::SetDigitalPinMode(Pin, INPUT);
@@ -76,7 +91,7 @@ struct LimitSwitch
 	bool Inverse;
 };
 
-Motor Pivot(CRC_PWM_9);
+Motor MoteurPivot(CRC_PWM_9);
 Motor Vertical(CRC_PWM_2);
 Motor Horizontal(CRC_PWM_3);
 LimitSwitch PivotLS(CRC_DIG_3, true);
@@ -287,9 +302,10 @@ struct Pince
 	}
 };
 
-Pince pince(CRC_PWM_5, CRC_PWM_6, -1, 1);
-CRCSchedulerClass Scheduler;
+Pince pinceCrabCrab(CRC_PWM_5, CRC_PWM_6, -1, 1);
+//CRCSchedulerClass Scheduler;
 Remote::DeviceManager Manager(2, CRC_DIG_2, CRC_DIG_1);
+Bilda5202Motor* Rotation;
 
 void CommandManager()
 {
@@ -300,7 +316,7 @@ void CommandManager()
 	case 1: // set speed
 	{
 		double v = Serial.parseFloat();
-		Pivot.SetPercent(v);
+		MoteurPivot.SetPercent(v);
 	}
 	break;
 	case 2: // move pos
@@ -310,17 +326,17 @@ void CommandManager()
 	}
 	break;
 	case 3: // move pince
-		pince.Open();
+		pinceCrabCrab.Open();
 		break;
 	case 4:
-		pince.Close();
+		pinceCrabCrab.Close();
 		break;
 	case 5:
 	{
 		double d = Serial.parseFloat();
 		Serial.print("Pince: ");
 		Serial.println(d);
-		pince.SetPercent(d);
+		pinceCrabCrab.SetPercent(d);
 	}
 	break;
 	case 6:
@@ -330,19 +346,19 @@ void CommandManager()
 		PivotHighLS.Test();
 		break;
 	case 8:
-		Pivot.SetPercent(-0.2);
+		MoteurPivot.SetPercent(-0.2);
 		while (Serial.available()) Serial.read();
 		while (!Serial.available() && !PivotHighLS.GetState())
 		{
 		}
-		Pivot.SetPercent(0);
+		MoteurPivot.SetPercent(0);
 		break;
 	default:
 		break;
 	}
 }
 
-int* myArray;
+//int* myArray;
 void setup() 
 {
 	Crc::CrcLib::Initialize();
@@ -350,22 +366,33 @@ void setup()
 	//while (!Serial);
 	Serial.println();
 
-	myArray = (int*)malloc(sizeof(int) * 2);
+	/*myArray = (int*)malloc(sizeof(int) * 2);
 	myArray[0] = 1;
-	myArray[1] = 2;
+	myArray[1] = 2;*/
 
+	//Initialize I2C pour Mega
 	Remote::Transmit.Init();
+
+	//Initialize les Device deportes (protocole de communication avec Mega)
 	Manager.Init();
+
 	//motorCharriot = new Remote::RemoteLinearEncodedMotor(0);
 	//motorWind = new Remote::RemoteLinearEncodedMotor(1);
+
+	Rotation = new Bilda5202Motor(CRC_PWM_1, CRC_ENCO_A, CRC_ENCO_B);
+	Rotation->RotateDegrees(0); 
 	//SETUP_DRIVING();
-	Pivot.Begin();
+
+	//Moteurs pas encoder
+	MoteurPivot.Begin();
 	Vertical.Begin();
 	Horizontal.Begin();
+	//Limit switches
 	PivotLS.Begin();
 	PivotHighLS.Begin();
 	VerticalLow.Begin();
-	pince.Init();
+	//La pince (2 servo-moteurs)
+	pinceCrabCrab.Init();
 	//Manager.AddDevice(motorCharriot);
 	//Manager.AddDevice(motorWind);
 }
@@ -379,7 +406,7 @@ void setup()
 void EasyRun()
 {
 	Debug("Start");
-	Pivot.SetPercent(0.2);
+	MoteurPivot.SetPercent(0.2);
 	/*uint8_t s0 = millis() + 750;
 	WaitForBegin(millis() > s0);
 	WaitForEnd;*/
@@ -388,17 +415,17 @@ void EasyRun()
 	WaitForBegin(PivotLS.GetState());
 	WaitForEnd;
 	Debug("Pivot down");
-	Pivot.SetPercent(0);
+	MoteurPivot.SetPercent(0);
 	/*uint32_t s1 = millis() + 1000;
 	WaitForBegin(millis() > s1);
 	WaitForEnd;*/
 	Debug("Stable");
-	pince.Open();
+	pinceCrabCrab.Open();
 	uint32_t s2 = millis() + 2000;
 	WaitForBegin(millis() > s2);
 	WaitForEnd;
 	Debug("Open");
-	Pivot.SetPercent(-0.25);
+	MoteurPivot.SetPercent(-0.25);
 	WaitForBegin(PivotHighLS.GetState());
 	WaitForEnd;
 
@@ -406,7 +433,7 @@ void EasyRun()
 	WaitForBegin(millis() > s3);
 	WaitForEnd;*/
 	Debug("Up");
-	Pivot.SetPercent(0);
+	MoteurPivot.SetPercent(0);
 
 }
 
@@ -415,23 +442,26 @@ void loop()
 {
 	Crc::CrcLib::Update();
 
-	if (digitalRead(CRC_DIG_12))
+	
+	if (digitalRead(CRC_DIG_12)) //Pin Debug 
 	{
+		//Mode Debug
 		CommandManager();
 	}
 	else
 	{
 		Serial.println("ARMED!!!!!");
+		//Attend bouton reset du mega
 		while (!digitalRead(CRC_DIG_1));
 		while (digitalRead(CRC_DIG_1));
 
 		Serial.println("resetting");
-		Pivot.SetPercent(-0.2);
+		MoteurPivot.SetPercent(-0.2);
 		while (Serial.available()) Serial.read();
 		while (!Serial.available() && !PivotHighLS.GetState())
 		{
 		}
-		Pivot.SetPercent(0);
+		MoteurPivot.SetPercent(0);
 
 		while (!digitalRead(CRC_DIG_1));
 		while (digitalRead(CRC_DIG_1));
@@ -439,8 +469,8 @@ void loop()
 		while (!digitalRead(CRC_DIG_1));
 		while (digitalRead(CRC_DIG_1));
 	}
-	if (PivotLS.GetState()) Pivot.SetPercent(0);
-	if (PivotHighLS.GetState()) Pivot.SetPercent(0);
+	if (PivotLS.GetState()) MoteurPivot.SetPercent(0);
+	if (PivotHighLS.GetState()) MoteurPivot.SetPercent(0);
 	if (Manager.CheckReply())
 	{
 		uint8_t id = Remote::Transmit.GetReplyDeviceID();
