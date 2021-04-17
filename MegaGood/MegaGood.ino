@@ -45,7 +45,7 @@ void CharriotInt()
 	encoCharriot->_update();
 }
 
-void CommandManager()
+void Debug()
 {
 	if (!Serial.available()) return;
 	int command = Serial.parseInt();
@@ -101,7 +101,7 @@ void setup()
 void loop()
 {
 	Manager.Run();
-	CommandManager();
+	Debug();
 	motorCharriot->Update();
 	//motorWind->Update();
 	/*static uint32_t nextMillis = 0;

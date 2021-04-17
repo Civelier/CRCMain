@@ -31,10 +31,9 @@ struct Motor
 	/// </summary>
 	/// <param name="pin">PWM pin of the motor</param>
 	/// <param name="inverse">Is the motor reversed</param>
-	Motor(uint8_t pin, bool inverse = false)
+	Motor(uint8_t pin)
 	{
 		Pin = pin;
-		Inverse = inverse;
 	}
 	/// <summary>
 	/// Initialize the motor
@@ -49,10 +48,9 @@ struct Motor
 	/// <param name="value">value from -1 to 1 describing the speed</param>
 	void SetPercent(double value)
 	{
-		Crc::CrcLib::SetPwmOutputFastDouble(Pin, 0.5 + (Inverse ? -value : value) / 2);
+		Crc::CrcLib::SetPwmOutputFastDouble(Pin, 0.5 + value / 2);
 	}
 	uint8_t Pin;
-	bool Inverse;
 };
 
 
@@ -91,12 +89,17 @@ struct LimitSwitch
 	bool Inverse;
 };
 
-Motor MoteurPivot(CRC_PWM_9);
-Motor Vertical(CRC_PWM_2);
-Motor Horizontal(CRC_PWM_3);
-LimitSwitch PivotLS(CRC_DIG_3, true);
+Motor MoteurPivot(CRC_PWM_1);
+Motor MoteurVertical(CRC_PWM_2);
+Motor MoteurHorizontal(CRC_PWM_3);
+LimitSwitch PivotLS(CRC_DIG_3);
 LimitSwitch VerticalLow(CRC_DIG_4);
 LimitSwitch PivotHighLS(CRC_DIG_5);
+LimitSwitch VerticalHigh(CRC_DIG_6);
+LimitSwitch HorizontalMin(CRC_DIG_7);
+LimitSwitch HorizontalMax(CRC_DIG_8);
+
+#pragma region Driving
 
 //enum MotorGroupMode
 //{
@@ -252,6 +255,11 @@ LimitSwitch PivotHighLS(CRC_DIG_5);
 //	PIDController PosPID;
 //};
 
+#pragma endregion
+
+
+
+
 struct ServoMotor
 {
 	ServoMotor(uint8_t pin)
@@ -271,18 +279,14 @@ struct ServoMotor
 
 struct Pince
 {
-	Pince(uint8_t pin1, uint8_t pin2, double open, double closed) : Servo1(pin1), Servo2(pin2)
+	Pince(uint8_t pin1, uint8_t pin2) : Servo1(pin1), Servo2(pin2)
 	{
-		Opened = open;
-		Closed = closed;
 	}
 	void Init()
 	{
 		Servo1.Init();
 		Servo2.Init();
 	}
-	double Opened;
-	double Closed;
 	ServoMotor Servo1;
 	ServoMotor Servo2;
 	void SetPercent(double percent)
@@ -292,69 +296,101 @@ struct Pince
 	}
 	void Open()
 	{
-		Servo1.Write(Opened);
-		Servo2.Write(Opened);
+		Servo1.Write(-1);
+		Servo2.Write(-1);
 	}
 	void Close()
 	{
-		Servo1.Write(Closed);
-		Servo2.Write(Closed);
+		Servo1.Write(1);
+		Servo2.Write(1);
 	}
 };
 
-Pince pinceCrabCrab(CRC_PWM_5, CRC_PWM_6, -1, 1);
+Pince pinceCrabCrab(CRC_PWM_5, CRC_PWM_6);
+ServoMotor ServoLacheBalle(CRC_PWM_7);
 //CRCSchedulerClass Scheduler;
-Remote::DeviceManager Manager(2, CRC_DIG_2, CRC_DIG_1);
-Bilda5202Motor* Rotation;
+//Remote::DeviceManager Manager(2, CRC_DIG_2, CRC_DIG_1);
+Bilda5202Motor* MoteurRotation;
 
-void CommandManager()
+void DebugCRC()
 {
-	if (!Serial.available()) return;
-	int command = Serial.parseInt();
-	switch (command)
+	while (true)
 	{
-	case 1: // set speed
-	{
-		double v = Serial.parseFloat();
-		MoteurPivot.SetPercent(v);
-	}
-	break;
-	case 2: // move pos
-	{
-		double d = Serial.parseFloat();
-		// motorWind->MoveDistance(d, 1);
-	}
-	break;
-	case 3: // move pince
-		pinceCrabCrab.Open();
-		break;
-	case 4:
-		pinceCrabCrab.Close();
-		break;
-	case 5:
-	{
-		double d = Serial.parseFloat();
-		Serial.print("Pince: ");
-		Serial.println(d);
-		pinceCrabCrab.SetPercent(d);
-	}
-	break;
-	case 6:
-		PivotLS.Test();
-		break;
-	case 7:
-		PivotHighLS.Test();
-		break;
-	case 8:
-		MoteurPivot.SetPercent(-0.2);
-		while (Serial.available()) Serial.read();
-		while (!Serial.available() && !PivotHighLS.GetState())
+		if (!Serial.available()) return;
+		int command = Serial.parseInt();
+		switch (command)
 		{
+		case 1: // set speed Pivot
+		{
+			double v = Serial.parseFloat();
+			MoteurPivot.SetPercent(v);
 		}
-		MoteurPivot.SetPercent(0);
 		break;
-	default:
+		case 2: // move pos
+		{
+			double d = Serial.parseFloat();
+			// motorWind->MoveDistance(d, 1);
+		}
 		break;
+		case 3: // move pince
+			pinceCrabCrab.Open();
+			break;
+		case 4:
+			pinceCrabCrab.Close();
+			break;
+		case 5:
+		{
+			double d = Serial.parseFloat();
+			Serial.print("Pince: ");
+			Serial.println(d);
+			pinceCrabCrab.SetPercent(d);
+		}
+		break;
+		case 6:
+			PivotLS.Test();
+			break;
+		case 7:
+			PivotHighLS.Test();
+			break;
+		case 8:
+			MoteurPivot.SetPercent(-0.2);
+			while (Serial.available()) Serial.read();
+			while (!Serial.available() && !PivotHighLS.GetState())
+			{
+			}
+			MoteurPivot.SetPercent(0);
+			break;
+		case 9:
+		{
+			double degree = Serial.parseFloat();
+			MoteurRotation->RotateToDegrees(degree);
+		}
+		case 10: 
+		{
+			double speed = Serial.parseFloat();
+			int miliseconds = Serial.parseInt();
+			MoteurVertical.SetPercent(speed);
+			uint32_t m = millis() + miliseconds;
+			while (millis() < m)
+			{
+				Crc::CrcLib::Update();
+				if (VerticalHigh.GetState()) MoteurVertical.SetPercent(0);
+				if (VerticalLow.GetState()) MoteurVertical.SetPercent(0);
+			}
+		}
+		default:
+			break;
+		}
+
+		//Failsafe du moteur pivot
+		if (PivotLS.GetState()) MoteurPivot.SetPercent(0);
+		if (PivotHighLS.GetState()) MoteurPivot.SetPercent(0);
+
+		if (HorizontalMax.GetState()) MoteurHorizontal.SetPercent(0);
+		if (HorizontalMin.GetState()) MoteurHorizontal.SetPercent(0);
+
+		if (VerticalHigh.GetState()) MoteurVertical.SetPercent(0);
+		if (VerticalLow.GetState()) MoteurVertical.SetPercent(0);
 	}
 }
 
@@ -366,36 +402,43 @@ void setup()
 	//while (!Serial);
 	Serial.println();
 
-	/*myArray = (int*)malloc(sizeof(int) * 2);
-	myArray[0] = 1;
-	myArray[1] = 2;*/
 
 	//Initialize I2C pour Mega
-	Remote::Transmit.Init();
+	//Remote::Transmit.Init();
 
 	//Initialize les Device deportes (protocole de communication avec Mega)
-	Manager.Init();
+	//Manager.Init();
 
 	//motorCharriot = new Remote::RemoteLinearEncodedMotor(0);
 	//motorWind = new Remote::RemoteLinearEncodedMotor(1);
 
-	Rotation = new Bilda5202Motor(CRC_PWM_1, CRC_ENCO_A, CRC_ENCO_B);
-	Rotation->RotateDegrees(0); 
+	MoteurRotation = new Bilda5202Motor(CRC_PWM_1, CRC_ENCO_A, CRC_ENCO_B);
+	MoteurRotation->RotateDegrees(0); 
 	//SETUP_DRIVING();
 
 	//Moteurs pas encoder
 	MoteurPivot.Begin();
-	Vertical.Begin();
-	Horizontal.Begin();
+	MoteurVertical.Begin();
+	MoteurHorizontal.Begin();
+
+	//Buttons
+	Crc::CrcLib::SetDigitalPinMode(CRC_DIG_1, INPUT);
+	Crc::CrcLib::SetDigitalPinMode(CRC_DIG_2, INPUT);
+
 	//Limit switches
 	PivotLS.Begin();
 	PivotHighLS.Begin();
 	VerticalLow.Begin();
+	VerticalHigh.Begin();
+	HorizontalMax.Begin();
+	HorizontalMin.Begin();
 	//La pince (2 servo-moteurs)
 	pinceCrabCrab.Init();
 	//Manager.AddDevice(motorCharriot);
 	//Manager.AddDevice(motorWind);
 }
+
+#define WaitFor(condition) while (!(condition)) { Crc::CrcLib::Update(); }
 
 #define WaitForBegin(condition) while (!(condition)) { Crc::CrcLib::Update();
 
@@ -403,92 +446,65 @@ void setup()
 
 #define Debug(text) Serial.println(text)
 
-void EasyRun()
+void ProgramJoute()
 {
 	Debug("Start");
 	MoteurPivot.SetPercent(0.2);
-	/*uint8_t s0 = millis() + 750;
-	WaitForBegin(millis() > s0);
-	WaitForEnd;*/
-	//Debug("Up");
-	//Pivot.SetPercent(0);
-	WaitForBegin(PivotLS.GetState());
-	WaitForEnd;
+	WaitFor(PivotLS.GetState());
 	Debug("Pivot down");
 	MoteurPivot.SetPercent(0);
-	/*uint32_t s1 = millis() + 1000;
-	WaitForBegin(millis() > s1);
-	WaitForEnd;*/
 	Debug("Stable");
 	pinceCrabCrab.Open();
 	uint32_t s2 = millis() + 2000;
-	WaitForBegin(millis() > s2);
-	WaitForEnd;
+	WaitFor(millis() > s2);
 	Debug("Open");
 	MoteurPivot.SetPercent(-0.25);
-	WaitForBegin(PivotHighLS.GetState());
-	WaitForEnd;
-
-	/*uint32_t s3 = millis() + 7000;
-	WaitForBegin(millis() > s3);
-	WaitForEnd;*/
+	WaitFor(PivotHighLS.GetState());
 	Debug("Up");
 	MoteurPivot.SetPercent(0);
 
+
+
+	ServoLacheBalle.Write(1);
+	uint32_t s3 = millis() + 3000;
+	WaitFor(millis() > s3);
+	ServoLacheBalle.Write(-1);
 }
+
+void PosInitiale()
+{
+	Serial.println("ARMED!!!!!");
+	//Attend bouton reset du mega
+	while (!digitalRead(CRC_DIG_1));
+	while (digitalRead(CRC_DIG_1));
+
+	Serial.println("resetting");
+	MoteurPivot.SetPercent(-0.2);
+	while (Serial.available()) Serial.read();
+	while (!Serial.available() && !PivotHighLS.GetState())
+	{}
+	MoteurPivot.SetPercent(0);
+
+	while (Serial.available()) Serial.read();
+	while (!Serial.available() && !PivotHighLS.GetState())
+	{
+	}
+}
+
 
 // the loop function runs over and over again until power down or reset
 void loop()
 {
 	Crc::CrcLib::Update();
 
-	
-	if (digitalRead(CRC_DIG_12)) //Pin Debug 
+	ProgramJoute();
+	if (digitalRead(CRC_DIG_1))
 	{
-		//Mode Debug
-		CommandManager();
+		//DebugCRC();
+		ProgramJoute();
 	}
-	else
+	if (digitalRead(CRC_DIG_2))
 	{
-		Serial.println("ARMED!!!!!");
-		//Attend bouton reset du mega
-		while (!digitalRead(CRC_DIG_1));
-		while (digitalRead(CRC_DIG_1));
-
-		Serial.println("resetting");
-		MoteurPivot.SetPercent(-0.2);
-		while (Serial.available()) Serial.read();
-		while (!Serial.available() && !PivotHighLS.GetState())
-		{
-		}
-		MoteurPivot.SetPercent(0);
-
-		while (!digitalRead(CRC_DIG_1));
-		while (digitalRead(CRC_DIG_1));
-		EasyRun();
-		while (!digitalRead(CRC_DIG_1));
-		while (digitalRead(CRC_DIG_1));
+		PosInitiale();
 	}
-	if (PivotLS.GetState()) MoteurPivot.SetPercent(0);
-	if (PivotHighLS.GetState()) MoteurPivot.SetPercent(0);
-	if (Manager.CheckReply())
-	{
-		uint8_t id = Remote::Transmit.GetReplyDeviceID();
-		if (id != 255)
-		{
-			Serial.print("Reply from: ");
-			Serial.println((int)id);
-		}
-	}
-
-	if (Manager.CheckReply())
-	{
-		uint8_t id = Remote::Transmit.GetReplyDeviceID();
-		if (id != 255)
-		{
-			Serial.print("Reply from: ");
-			Serial.println((int)id);
-		}
-	}
-
 }
