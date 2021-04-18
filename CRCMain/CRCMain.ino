@@ -10,16 +10,11 @@
 #include <PIDController.h> //PID
 #include <Encoder.h> //Pour moteurs encoder
 #include <CrcLib.h> //Pour CRCDuino
-#include <Adafruit_VL53L0X.h> //Pour capteur I2c IR
 #include <Adafruit_NeoPixel.h> //Neopixel du Crcduino
 #include "Bilda5202Motor.h" //Ma library des moteurs encoder
-#include "RemoteDeviceManager.h" //Fait partie de ma library: Communication entre crc et Mega
-#include "RemoteIncludes.h" //Includes specifiques au cote remote de la communication
-#include "LinkedList.h" //Ma library de liste dynamique
-#include <RemoteLinearEncodedMotor.h> //Janky encoder a distance
-#include "Transmitter.h" //Communication au Mega (ma library)
 //#include "CRCScheduler.h" //Le scheduler (trop instable pour etre utilliser mais je le garde pcq le code marche avec et je veux pas prendre le temps de l'enlever et d'avoir a le remettre apres si on en a besoin)
 
+Bilda5202Motor* TestMotor;
 
 /// <summary>
 /// Moteur simple
@@ -92,7 +87,8 @@ struct LimitSwitch
 Motor MoteurPivot(CRC_PWM_1);
 Motor MoteurVertical(CRC_PWM_2);
 Motor MoteurHorizontal(CRC_PWM_3);
-LimitSwitch PivotLS(CRC_DIG_3);
+Motor MoteurRotation(CRC_PWM_4);
+LimitSwitch PivotLS(CRC_DIG_3, true);
 LimitSwitch VerticalLow(CRC_DIG_4);
 LimitSwitch PivotHighLS(CRC_DIG_5);
 LimitSwitch VerticalHigh(CRC_DIG_6);
@@ -275,6 +271,14 @@ struct ServoMotor
 	{
 		Crc::CrcLib::SetPwmOutputFastDouble(Pin, percent);
 	}
+	void Stop()
+	{
+		Crc::CrcLib::UnInitializePwmOutput(Pin);
+	}
+	void Start()
+	{
+		Crc::CrcLib::ReInitializePwmOutput(Pin);
+	}
 };
 
 struct Pince
@@ -310,7 +314,7 @@ Pince pinceCrabCrab(CRC_PWM_5, CRC_PWM_6);
 ServoMotor ServoLacheBalle(CRC_PWM_7);
 //CRCSchedulerClass Scheduler;
 //Remote::DeviceManager Manager(2, CRC_DIG_2, CRC_DIG_1);
-Bilda5202Motor* MoteurRotation;
+//Bilda5202Motor* MoteurRotation;
 
 void DebugCRC()
 {
@@ -362,8 +366,8 @@ void DebugCRC()
 			break;
 		case 9:
 		{
-			double degree = Serial.parseFloat();
-			MoteurRotation->RotateToDegrees(degree);
+			double speed = Serial.parseFloat();
+			MoteurRotation.SetPercent(speed);
 		}
 		case 10: 
 		{
@@ -397,10 +401,11 @@ void DebugCRC()
 //int* myArray;
 void setup() 
 {
+	TestMotor = new Bilda5202Motor(CRC_PWM_4, CRC_ENCO_A, CRC_ENCO_B);
 	Crc::CrcLib::Initialize();
 	Serial.begin(115200);
-	//while (!Serial);
 	Serial.println();
+	//while (!Serial);
 
 
 	//Initialize I2C pour Mega
@@ -412,18 +417,18 @@ void setup()
 	//motorCharriot = new Remote::RemoteLinearEncodedMotor(0);
 	//motorWind = new Remote::RemoteLinearEncodedMotor(1);
 
-	MoteurRotation = new Bilda5202Motor(CRC_PWM_1, CRC_ENCO_A, CRC_ENCO_B);
-	MoteurRotation->RotateDegrees(0); 
+	//MoteurRotation->RotateDegrees(0); 
 	//SETUP_DRIVING();
 
 	//Moteurs pas encoder
 	MoteurPivot.Begin();
 	MoteurVertical.Begin();
 	MoteurHorizontal.Begin();
+	//MoteurRotation.Begin();
 
 	//Buttons
 	Crc::CrcLib::SetDigitalPinMode(CRC_DIG_1, INPUT);
-	Crc::CrcLib::SetDigitalPinMode(CRC_DIG_2, INPUT);
+	Crc::CrcLib::SetDigitalPinMode(CRC_DIG_2, INPUT_PULLUP);
 
 	//Limit switches
 	PivotLS.Begin();
@@ -432,10 +437,16 @@ void setup()
 	VerticalHigh.Begin();
 	HorizontalMax.Begin();
 	HorizontalMin.Begin();
+	ServoLacheBalle.Init();
+	ServoLacheBalle.Stop();
 	//La pince (2 servo-moteurs)
 	pinceCrabCrab.Init();
 	//Manager.AddDevice(motorCharriot);
 	//Manager.AddDevice(motorWind);
+
+	pinceCrabCrab.Open();
+	delay(3000);
+	pinceCrabCrab.Close();
 }
 
 #define WaitFor(condition) while (!(condition)) { Crc::CrcLib::Update(); }
@@ -464,11 +475,50 @@ void ProgramJoute()
 	MoteurPivot.SetPercent(0);
 
 
-
+	//Balle
+	ServoLacheBalle.Start();
 	ServoLacheBalle.Write(1);
 	uint32_t s3 = millis() + 3000;
 	WaitFor(millis() > s3);
 	ServoLacheBalle.Write(-1);
+	ServoLacheBalle.Stop();
+
+	MoteurPivot.SetPercent(0.2);
+	WaitFor(PivotLS.GetState());
+	MoteurPivot.SetPercent(0);
+
+	//Reset
+	MoteurPivot.SetPercent(-0.25);
+	WaitFor(PivotHighLS.GetState());
+	Debug("Up");
+	MoteurPivot.SetPercent(0);
+}
+
+void TestBilda()
+{
+
+	if (!Serial.available()) return;
+	double deg = Serial.parseFloat();
+	TestMotor->RotateToDegrees(deg);
+}
+
+void ProgramRotate()
+{
+	uint32_t s2;
+	Debug("Move 1");
+	MoteurRotation.SetPercent(0.99);
+	s2 = millis() + 1020;
+	WaitFor(millis() > s2);
+	MoteurRotation.SetPercent(0);
+	WaitFor(digitalRead(CRC_DIG_1));
+	WaitFor(!digitalRead(CRC_DIG_1));
+	Debug("Move -1");
+	MoteurRotation.SetPercent(-0.99);
+	s2 = millis() + 1020;
+	WaitFor(millis() > s2);
+	MoteurRotation.SetPercent(0);
+	WaitFor(digitalRead(CRC_DIG_1));
+	WaitFor(!digitalRead(CRC_DIG_1));
 }
 
 void PosInitiale()
@@ -480,8 +530,7 @@ void PosInitiale()
 
 	Serial.println("resetting");
 	MoteurPivot.SetPercent(-0.2);
-	while (Serial.available()) Serial.read();
-	while (!Serial.available() && !PivotHighLS.GetState())
+	while (!PivotHighLS.GetState())
 	{}
 	MoteurPivot.SetPercent(0);
 
@@ -496,15 +545,26 @@ void PosInitiale()
 void loop()
 {
 	Crc::CrcLib::Update();
-
-	ProgramJoute();
-	if (digitalRead(CRC_DIG_1))
+	
+	TestBilda();
+	TestMotor->UpdateSpeed();
+	if (!digitalRead(CRC_DIG_1))
 	{
+		//Crc::CrcLib::SetPwmOutputFastDouble(CRC_PWM_4, 1);
 		//DebugCRC();
-		ProgramJoute();
+		//ProgramJoute();
+		//ProgramRotate();
+		//double degree = 90;
+		////MoteurRotation->RotateToDegrees(degree);
+		//MoteurRotation->SetPercent(0.5);
+		//MoteurRotation->Reset();
+		//while (MoteurRotation->GetDegrees() < 90);
+		//MoteurRotation->SetPercent(0);
+
 	}
-	if (digitalRead(CRC_DIG_2))
+	//MoteurRotation->UpdateSpeed();
+	/*if (!digitalRead(CRC_DIG_2))
 	{
 		PosInitiale();
-	}
+	}*/
 }
